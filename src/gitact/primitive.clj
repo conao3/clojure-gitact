@@ -2,7 +2,9 @@
   (:require
    [merr.core :as merr]
    [clojure.string :as string]
-   [clojure.java.shell :as shell]))
+   [clojure.java.shell :as shell])
+  (:import
+   [java.nio.file FileSystems]))
 
 (defn merr-invoke-command [& args]
   (let [res (apply shell/sh args)]
@@ -17,3 +19,7 @@
         (->> (str (:out git1) (:out git2))
              string/trim
              (#(if (= "" %) [] (string/split-lines %)))))))
+
+(defn glob-match? [pattern string]
+  (let [matcher (.getPathMatcher (FileSystems/getDefault) (str "glob:" pattern))]
+    (.matches matcher (.getPath (FileSystems/getDefault) string (into-array String [])))))
