@@ -1,0 +1,3 @@
+{:lib com.github.conao3/gitact
+ :version "0.1.{{git/commit-count}}"
+ :main gitact.main}
